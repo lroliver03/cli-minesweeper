@@ -4,7 +4,7 @@ board_t* createBoard(uint8_t rows, uint8_t cols) {
     board_t *b = malloc(sizeof(board_t));
     b->rows = rows;
     b->cols = cols;
-    b->state = INACTIVE;
+    b->state = NONE;
     b->cells = calloc(sizeof(cell_t), rows*cols);
     for (int i = 0; i < b->rows; i++) {
         for (int j = 0; j < b->cols; j++) {
@@ -24,7 +24,7 @@ void deleteBoard(board_t *board) {
 void resetBoard(board_t *board, uint8_t rows, uint8_t cols) {
     board->rows = rows;
     board->cols = cols;
-    board->state = INACTIVE;
+    board->state = NONE;
     free(board->cells);
     board->cells = calloc(sizeof(cell_t), rows*cols);
     for (int i = 0; i < board->rows; i++) {
@@ -38,6 +38,10 @@ void resetBoard(board_t *board, uint8_t rows, uint8_t cols) {
 
 board_state_t getBoardState(board_t *board) {
     return board->state;
+}
+
+void setBoardState(board_t *board, board_state_t state) {
+    board->state = state;
 }
 
 cell_state_t getCellState(board_t *board, uint8_t x, uint8_t y) {
