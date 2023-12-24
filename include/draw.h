@@ -1,10 +1,12 @@
+#pragma once
+
 #include <stdio.h>
 #include "ANSI_ESC/colors.h"
 #include "ANSI_ESC/format.h"
-#include "board.h"
+#include "game.h"
 
 #define CHAR_HIDDEN '#'
 #define CHAR_FLAG 'F'
 #define CHAR_BOMB '*'
 
-void drawBoard(board_t *board);
+void draw(game_t *game);
