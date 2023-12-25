@@ -5,12 +5,15 @@ void draw(game_t *game) {
   uint8_t cols = game->board->cols;
   printf("\033[2J");
   printf("\033[0;0H");
-  printf("\n");
 
+  // Draw game stats.
+  printf("Mines remaining: %d", game->mines_left);
+
+  // Draw board.
   for (int i = 0; i < game->board->rows; i++) {
     for (int j = 0; j < game->board->cols; j++) {
       uint8_t is_cursor = (i == getCursorY(game) && j == getCursorX(game));
-      printf("\033[%d;%dH", CELL_SPACING * i + 1, CELL_SPACING * j + 1);
+      printf("\033[%d;%dH", CELL_SPACING * i + 3, CELL_SPACING * j + 1);
 
       if (is_cursor) 
         printf(ESC_REVERSE);
@@ -28,7 +31,7 @@ void draw(game_t *game) {
           }
           break;
         case FLAGGED:
-          printf("%s%c%s", ESC_REDBG, CHAR_FLAG, ESC_RESET);
+          printf("%s%s%c%s", ESC_REDBG, ESC_BOLD, CHAR_FLAG, ESC_RESET);
           break;
       }
 

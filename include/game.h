@@ -17,7 +17,7 @@ typedef struct cursor_t {
 typedef struct game_t {
   game_state_t state;
   cursor_t cursor;
-  uint8_t mines;
+  int16_t mines, mines_left;
   board_t *board;
 } game_t;
 

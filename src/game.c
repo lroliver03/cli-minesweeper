@@ -6,6 +6,7 @@ game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines) {
   game->cursor.x = cols / 2;
   game->cursor.y = rows / 2;
   game->mines = mines;
+  game->mines_left = mines;
   game->board = createBoard(rows, cols);
 
   assert((mines > 0) && "The board must have at least one mine!");
