@@ -9,7 +9,7 @@
 
 #define ROWS 10
 #define COLS 10
-#define MINES 10
+#define MINES 5
 
 int main() {
 
