@@ -25,9 +25,14 @@ int main() {
   game_t *game = createGame(ROWS, COLS, MINES);
 
   printf("\033[2J");
+  draw(game);
   while (getGameState(game) == ONGOING) {
-    draw(game);
     handleInput(game, getInput());
+    draw(game);
+    if (getBoardState(game->board) == LOSE) {
+      printf("\n\nYou triggered a bomb! Game over!");
+      setGameState(game, QUIT);
+    }
   }
 
   deleteGame(game);
