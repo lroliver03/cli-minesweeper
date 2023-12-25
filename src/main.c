@@ -7,9 +7,9 @@
 #include "draw.h"
 #include "controls.h"
 
-#define ROWS 10
-#define COLS 10
-#define MINES 5
+#define ROWS 20
+#define COLS 20
+#define MINES 40
 
 int main() {
 
