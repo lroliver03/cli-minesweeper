@@ -21,3 +21,5 @@ typedef enum control_t {
 
 control_t getInput();
 void handleInput(game_t *game, control_t input);
+void handleCellClick(game_t *game, cell_state_t state, uint8_t is_bomb);
+void __recursiveZeroCellClick(game_t *game, uint8_t x, uint8_t y);
