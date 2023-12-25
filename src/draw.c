@@ -10,7 +10,7 @@ void draw(game_t *game) {
   for (int i = 0; i < game->board->rows; i++) {
     for (int j = 0; j < game->board->cols; j++) {
       uint8_t is_cursor = (i == getCursorY(game) && j == getCursorX(game));
-      printf("\033[%d;%dH", 2 * i + 1, 2 * j + 1);
+      printf("\033[%d;%dH", CELL_SPACING * i + 1, CELL_SPACING * j + 1);
 
       if (is_cursor) 
         printf(ESC_REVERSE);

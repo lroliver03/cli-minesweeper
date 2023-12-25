@@ -8,6 +8,7 @@
 #define CHAR_HIDDEN '#'
 #define CHAR_FLAG 'F'
 #define CHAR_BOMB '*'
+#define CELL_SPACING 2
 
 void draw(game_t *game);
 
