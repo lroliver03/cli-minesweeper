@@ -7,9 +7,9 @@
 #include "draw.h"
 #include "controls.h"
 
-#define ROWS 20
-#define COLS 20
-#define MINES 40
+#define ROWS 10
+#define COLS 10
+#define MINES 10
 
 int main() {
 
@@ -30,8 +30,11 @@ int main() {
     handleInput(game, getInput());
     draw(game);
     if (getBoardState(game->board) == LOSE) {
-      printf("\n\nYou triggered a bomb! Game over!");
+      printf("\nYou triggered a bomb! Game over!");
       setGameState(game, QUIT);
+    } else if (game->state.hidden_cells == 0) {
+      printf("\nYou safely discovered all bombs! You win!");
+      setGameState(game, END);
     }
   }
 

@@ -45,9 +45,15 @@ void handleInput(game_t *game, control_t input) {
       if (state == HIDDEN) {
         setCellState(game->board, game->cursor.x, game->cursor.y, FLAGGED);
         --game->state.mines_left;
+        --game->state.hidden_cells;
+        if (getCellIsBomb(game->board, getCursorX(game), getCursorY(game)))
+          --game->state.flags_left;
       } else if (state == FLAGGED) {
         setCellState(game->board, game->cursor.x, game->cursor.y, HIDDEN);
         ++game->state.mines_left;
+        ++game->state.hidden_cells;
+        if (getCellIsBomb(game->board, getCursorX(game), getCursorY(game)))
+          ++game->state.flags_left;
       }
       break;
     case ACTION_CLICK:
@@ -67,12 +73,12 @@ void handleCellClick(game_t *game, cell_state_t state, uint8_t is_bomb) {
       setBoardState(game->board, LOSE);
 
     // If cell has no bomb neighbors, show adjacent cells with no bomb neighbors.
-    if (getCellNeighbors(game->board, x, y) == 0) {
+    if (getCellNeighbors(game->board, x, y) == 0)
       __recursiveZeroCellClick(game, x, y);
+    else { // Else, just show cell.
+      setCellState(game->board, x, y, SHOWN);
+      --game->state.hidden_cells;
     }
-
-    // Show cell.
-    setCellState(game->board, x, y, SHOWN);
 
   } else if (state == SHOWN) {
     uint8_t correctly_flagged_count = 0;
@@ -105,6 +111,7 @@ void __recursiveZeroCellClick(game_t *game, uint8_t x, uint8_t y) {
   if (getCellIsBomb(game->board, x, y) || (getCellState(game->board, x, y) == SHOWN)) return; // This getCellState inside the IF statement avoids infinite recursive loops. DON'T REMOVE IT.
 
   setCellState(game->board, x, y, SHOWN);
+  --game->state.hidden_cells;
 
   if (getCellNeighbors(game->board, x, y) > 0) return;
   

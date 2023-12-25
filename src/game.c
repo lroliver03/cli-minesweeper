@@ -7,6 +7,8 @@ game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines) {
   game->mines = mines;
   game->state.game_state = ONGOING;
   game->state.mines_left = mines;
+  game->state.flags_left = mines;
+  game->state.hidden_cells = rows * cols;
   time(&(game->state.start_time));
   game->board = createBoard(rows, cols);
 
