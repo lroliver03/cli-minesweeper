@@ -23,6 +23,8 @@ int main() {
                 case 'C': printf("right\n"); break;
                 case 'D': printf("left\n"); break;
             }
+        } else {
+            printf("%d\n", key);
         }
     }
 
