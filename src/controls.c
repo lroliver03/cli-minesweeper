@@ -44,10 +44,10 @@ void handleInput(game_t *game, control_t input) {
     case ACTION_FLAG:
       if (state == HIDDEN) {
         setCellState(game->board, game->cursor.x, game->cursor.y, FLAGGED);
-        --game->mines_left;
+        --game->state.mines_left;
       } else if (state == FLAGGED) {
         setCellState(game->board, game->cursor.x, game->cursor.y, HIDDEN);
-        ++game->mines_left;
+        ++game->state.mines_left;
       }
       break;
     case ACTION_CLICK:

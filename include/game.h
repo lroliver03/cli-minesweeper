@@ -1,29 +1,29 @@
 #pragma once
 
+#include <assert.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <time.h>
 #include "board.h"
-#include <assert.h>
-
-typedef enum game_state_t {
-  ONGOING, // Game running
-  QUIT     // Quitting game
-} game_state_t;
+#include "state.h"
 
 typedef struct cursor_t {
   uint8_t x, y;
 } cursor_t;
 
 typedef struct game_t {
-  game_state_t state;
+  state_t state;
   cursor_t cursor;
-  int16_t mines, mines_left;
+  uint8_t mines;
   board_t *board;
 } game_t;
 
 game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines);
 void deleteGame(game_t *game);
 game_state_t getGameState(game_t *game);
+uint8_t getTotalMines(game_t *game);
+int16_t getRemainingMines(game_t *game);
+time_t getTimeSinceStart(game_t *game);
 void setGameState(game_t *game, game_state_t state);
 
 void moveCursor(game_t *game, int16_t dx, int16_t dy);

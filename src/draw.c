@@ -7,7 +7,7 @@ void draw(game_t *game) {
   printf("\033[0;0H");
 
   // Draw game stats.
-  printf("Mines remaining: %d", game->mines_left);
+  printf("Mines remaining: %d", game->state.mines_left);
 
   // Draw board.
   for (int i = 0; i < game->board->rows; i++) {

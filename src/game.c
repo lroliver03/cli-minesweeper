@@ -2,11 +2,12 @@
 
 game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines) {
   game_t *game = malloc(sizeof(game_t));
-  game->state = ONGOING;
   game->cursor.x = cols / 2;
   game->cursor.y = rows / 2;
   game->mines = mines;
-  game->mines_left = mines;
+  game->state.game_state = ONGOING;
+  game->state.mines_left = mines;
+  time(&(game->state.start_time));
   game->board = createBoard(rows, cols);
 
   assert((mines > 0) && "The board must have at least one mine!");
@@ -31,11 +32,23 @@ void deleteGame(game_t *game) {
 }
 
 game_state_t getGameState(game_t *game) {
-  return game->state;
+  return game->state.game_state;
+}
+
+uint8_t getTotalMines(game_t *game) {
+  return game->mines;
+}
+
+int16_t getRemainingMines(game_t *game) {
+  return game->state.mines_left;
+}
+
+time_t getTimeSinceStart(game_t *game) {
+  return time(NULL) - game->state.start_time;
 }
 
 void setGameState(game_t *game, game_state_t state) {
-  game->state = state;
+  game->state.game_state = state;
 }
 
 void moveCursor(game_t *game, int16_t dx, int16_t dy) {
