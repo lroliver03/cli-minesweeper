@@ -4,7 +4,7 @@
 
 #define KEY_FLAG 'f'
 #define KEY_FLAG_UPPERCASE 'F'
-#define KEY_CLICK (char)40
+#define KEY_CLICK ' '
 #define KEY_QUIT 'q'
 #define KEY_QUIT_UPPERCASE 'Q'
 

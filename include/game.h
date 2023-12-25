@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "board.h"
+#include <assert.h>
 
 typedef enum game_state_t {
   ONGOING, // Game running
@@ -16,11 +17,11 @@ typedef struct cursor_t {
 typedef struct game_t {
   game_state_t state;
   cursor_t cursor;
-  float mine_probability; // Between 0.0 and 1.0
+  uint8_t mines;
   board_t *board;
 } game_t;
 
-game_t *createGame(uint8_t rows, uint8_t cols, float mine_probability);
+game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines);
 void deleteGame(game_t *game);
 game_state_t getGameState(game_t *game);
 void setGameState(game_t *game, game_state_t state);

@@ -1,17 +1,22 @@
 #include "game.h"
 
-game_t *createGame(uint8_t rows, uint8_t cols, float mine_probability) {
+game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines) {
   game_t *game = malloc(sizeof(game_t));
   game->state = ONGOING;
   game->cursor.x = cols / 2;
   game->cursor.y = rows / 2;
-  game->mine_probability = mine_probability;
+  game->mines = mines;
   game->board = createBoard(rows, cols);
 
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      setCellState(game->board, i, j, HIDDEN);
-      setCellIsBomb(game->board, i, j, (rand() / (float)RAND_MAX < mine_probability));
+  assert((mines > 0) && "The board must have at least one mine!");
+  assert((mines < rows * cols) && "There must be less mines than cells in a board!");
+
+  uint8_t mine_counter = mines;
+  while (mine_counter > 0) {
+    uint8_t mine_x = rand() % cols, mine_y = rand() % rows;
+    if (!getCellIsBomb(game->board, mine_x, mine_y)) {
+      setCellIsBomb(game->board, mine_x, mine_y, 1);
+      --mine_counter;
     }
   }
 

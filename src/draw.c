@@ -3,6 +3,7 @@
 void draw(game_t *game) {
   uint8_t rows = game->board->rows;
   uint8_t cols = game->board->cols;
+  printf("\033[2J");
   printf("\033[0;0H");
   printf("\n");
 
@@ -19,10 +20,13 @@ void draw(game_t *game) {
           printf("%c", CHAR_HIDDEN);
           break;
         case SHOWN:
-          printf("%1d", game->board->cells[game->board->rows * i + j].neighbors);
+          if (getCellIsBomb(game->board, j, i))
+            printf("%s%c%s", ESC_REDBG, CHAR_BOMB, ESC_RESET);
+          else
+            printf("%d", getCellNeighbors(game->board, j, i));
           break;
         case FLAGGED:
-          printf("%c", CHAR_FLAG);
+          printf("%s%c%s", ESC_REDBG, CHAR_FLAG, ESC_RESET);
           break;
       }
 
