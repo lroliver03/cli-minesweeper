@@ -37,7 +37,7 @@ int main() {
 
   deleteGame(game);
 
-  printf("\n\n");
+  printf("\n\n%s", ESC_RESET);
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
   
   return 0;
