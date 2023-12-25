@@ -65,7 +65,7 @@ void handleCellClick(game_t *game, cell_state_t state, uint8_t is_bomb) {
     if (is_bomb)
       setBoardState(game->board, LOSE);
 
-    // If cell has no neighbors, show adjacent cells with no neighbors.
+    // If cell has no bomb neighbors, show adjacent cells with no bomb neighbors.
     if (getCellNeighbors(game->board, getCursorX(game), getCursorY(game)) == 0) {
       __recursiveZeroCellClick(game, getCursorX(game), getCursorY(game));
     }
