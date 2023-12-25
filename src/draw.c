@@ -9,7 +9,7 @@ void draw(game_t *game) {
 
   // Draw game stats.
   printf("Mines remaining: %d", game->state.mines_left);
-  printf("\nDEBUG: game->state.hidden_cells == %d", game->state.hidden_cells);
+  // printf("\nDEBUG: game->state.hidden_cells == %d", game->state.hidden_cells);
 
   // Draw board.
   for (int i = 0; i < game->board->rows; i++) {
