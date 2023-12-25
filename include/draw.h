@@ -10,3 +10,6 @@
 #define CHAR_BOMB '*'
 
 void draw(game_t *game);
+
+extern const char *NEIGHBOR_COLORS[];
+extern const char NEIGHBOR_CHARS[];

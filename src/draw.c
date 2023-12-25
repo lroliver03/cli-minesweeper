@@ -17,13 +17,15 @@ void draw(game_t *game) {
 
       switch (getCellState(game->board, j, i)) {
         case HIDDEN:
-          printf("%c", CHAR_HIDDEN);
+          printf("%s%c%s", ESC_DIM, CHAR_HIDDEN, ESC_UNDIM);
           break;
         case SHOWN:
           if (getCellIsBomb(game->board, j, i))
             printf("%s%c%s", ESC_REDBG, CHAR_BOMB, ESC_RESET);
-          else
-            printf("%d", getCellNeighbors(game->board, j, i));
+          else {
+            uint8_t neighbors = getCellNeighbors(game->board, j, i);
+            printf("%s%c%s", NEIGHBOR_COLORS[neighbors], NEIGHBOR_CHARS[neighbors], ESC_RESET);
+          }
           break;
         case FLAGGED:
           printf("%s%c%s", ESC_REDBG, CHAR_FLAG, ESC_RESET);
@@ -35,3 +37,27 @@ void draw(game_t *game) {
     }
   }
 }
+
+const char *NEIGHBOR_COLORS[] = {
+  ESC_WHITE,
+  ESC_BLUE,
+  ESC_GREEN,
+  ESC_RED,
+  ESC_CYAN,
+  ESC_MAGENTA,
+  ESC_YELLOW,
+  ESC_WHITE,
+  ESC_WHITE
+};
+
+const char NEIGHBOR_CHARS[] = {
+  '.',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8'
+};
