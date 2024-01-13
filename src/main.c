@@ -25,8 +25,8 @@ int main() {
   game_t *game = createGame(ROWS, COLS, MINES);
 
   printf("\033[2J");
-  drawBoard(game);
   game_state_t game_state;
+  drawBoard(game);
   while ((game_state = getGameState(game)) == GSTATE_ONGOING || game_state == GSTATE_MENU) {
     control_t input = getInput();
 
