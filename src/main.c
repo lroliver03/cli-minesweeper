@@ -22,20 +22,21 @@ int main() {
 
   srand(time(NULL));
 
-  game_t *game = createGame(ROWS, COLS, MINES);
+  game_t *game = createGame();
+  startGame(game, ROWS, COLS, MINES);
 
   printf("\033[2J");
   game_state_t game_state;
   drawBoard(game);
   while ((game_state = getGameState(game)) == GSTATE_ONGOING || game_state == GSTATE_MENU) {
-    control_t input = getInput();
+    // control_t input = getInput();
 
     if (game_state == GSTATE_MENU) {
-      handleMenuInput(game, input);
       drawMenu(game);
+      handleMenuInput(game, getInput());
     } else if (game_state == GSTATE_ONGOING) {
-      handleGameInput(game, input);
       drawBoard(game);
+      handleGameInput(game, getInput());
     }
     
     if (getBoardState(game->board) == BSTATE_LOSE) {

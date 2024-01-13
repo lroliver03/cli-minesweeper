@@ -1,7 +1,20 @@
 #include "game.h"
 
-game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines) {
+game_t *createGame() {
   game_t *game = malloc(sizeof(game_t));
+  game->cursor.x = 0;
+  game->cursor.y = 0;
+  game->mines = 0;
+  game->state.game_state = GSTATE_MENU;
+  game->state.mines_left = 0;
+  game->state.flags_left = 0;
+  game->state.hidden_cells = 0;
+  time(&(game->state.start_time));
+  game->board = NULL;
+  return game;
+}
+
+void startGame(game_t *game, uint8_t rows, uint8_t cols, uint8_t mines) {
   game->cursor.x = cols / 2;
   game->cursor.y = rows / 2;
   game->mines = mines;
@@ -25,7 +38,6 @@ game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines) {
   }
 
   setBoardState(game->board, BSTATE_NONE);
-  return game;
 }
 
 void deleteGame(game_t *game) {

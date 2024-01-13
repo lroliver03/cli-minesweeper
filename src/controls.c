@@ -38,8 +38,10 @@ void handleGameInput(game_t *game, control_t input) {
       handleCellClick(game, cell_state, is_bomb); // Complex logic, warrants separate function.
       break;
     case ACTION_QUIT:
-      if (doDialog(2, 5, 30, 8, "Are you sure?", "If you quit, your progress will not be saved.", DIALOG_FORM_YES_NO) == DIALOG_YES)
+      if (doDialog(2, 5, 30, 8, "Are you sure?", "If you quit, your progress will not be saved.", DIALOG_FORM_YES_NO) == DIALOG_YES) {
         setGameState(game, GSTATE_MENU);
+        moveCursorTo(game, 0, 0);
+      }
       break;
   }
 }

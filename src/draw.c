@@ -1,13 +1,17 @@
 #include "draw.h"
 
 void drawMenu(game_t *game) {
+  ESC_ERASEALL();
   ESC_GOTO(0, 0);
+  printf(MENU_TITLE);
+
+  
 }
 
 void drawBoard(game_t *game) {
   uint8_t rows = game->board->rows;
   uint8_t cols = game->board->cols;
-  printf("\033[2J");
+  ESC_ERASEALL();
   // printf("\033[0;0H");
   ESC_GOTO(0, 0);
 
