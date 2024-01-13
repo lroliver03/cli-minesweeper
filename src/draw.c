@@ -7,17 +7,13 @@ void draw(game_t *game) {
   // printf("\033[0;0H");
   ESC_GOTO(0, 0);
 
-  // Draw game stats.
-  printf("Mines remaining: %d", game->state.mines_left);
-  printf("\nDEBUG: game->state.hidden_cells == %d", game->state.hidden_cells);
-
-  // Draw board.
+  // Draw board contents.
   for (int i = 0; i < game->board->rows; i++) {
     for (int j = 0; j < game->board->cols; j++) {
       uint8_t is_cursor = (i == getCursorY(game) && j == getCursorX(game));
 
-      uint16_t pos_x = CELL_X_SPACING*j + PADDING_X + 1;
-      uint16_t pos_y = CELL_Y_SPACING*i + PADDING_Y + 4;
+      uint16_t pos_x = CELL_X_SPACING*j + PADDING_X + OFFSET_X + 2;
+      uint16_t pos_y = CELL_Y_SPACING*i + PADDING_Y + OFFSET_Y + 1;
 
       if (is_cursor) {
         ESC_GOTO(pos_x - 1, pos_y);
@@ -44,7 +40,34 @@ void draw(game_t *game) {
           break;
       }
     }
+
+  // Draw board frame.
+    // Top side: 1x corner, (PADDING_X + game->board->cols*CELL_X_SPACING + PADDING_X)x horizontal, 1x corner
+  ESC_GOTO(OFFSET_X, OFFSET_Y);
+  putchar(CHAR_BORDER_CORNER);
+  for (int i = 0; i < game->board->cols*CELL_X_SPACING + 2*PADDING_X; ++i) putchar(CHAR_BORDER_HORIZONTAL);
+  putchar(CHAR_BORDER_CORNER);
+  putchar('\n');
+    // Left and right sides: (PADDING_Y + game->board->rows*CELL_Y_SPACING + PADDING_Y)x (1x vertical, (PADDING_X + game->board->cols*CELL_X_SPACING + PADDING_X)x blank, 1x vertical)
+  for (int i = 0; i < game->board->rows*CELL_Y_SPACING + 2*PADDING_Y; ++i) {
+    putchar(CHAR_BORDER_VERTICAL);
+    // for (int j = 0; j < game->board->cols*CELL_X_SPACING + 2*PADDING_X; ++j) putchar(' ');
+    ESC_GOTO(game->board->cols*CELL_X_SPACING + 2*PADDING_X + OFFSET_X + 1, i + OFFSET_Y + 1);
+    putchar(CHAR_BORDER_VERTICAL);
+    putchar('\n');
   }
+    // Bottom side.
+  ESC_GOTO(OFFSET_X, game->board->rows*CELL_Y_SPACING + OFFSET_Y + 2*PADDING_Y + 1);
+  putchar(CHAR_BORDER_CORNER);
+  for (int i = 0; i < game->board->cols*CELL_X_SPACING + 2*PADDING_X; ++i) putchar(CHAR_BORDER_HORIZONTAL);
+  putchar(CHAR_BORDER_CORNER);
+  putchar('\n');
+
+  // Draw game stats.
+  printf("Mines remaining: %d", game->state.mines_left);
+  // printf("\nDEBUG: game->state.hidden_cells == %d", game->state.hidden_cells);
+  }
+
   printf("\n\n");
 }
 
