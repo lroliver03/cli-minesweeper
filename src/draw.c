@@ -9,20 +9,23 @@ void draw(game_t *game) {
 
   // Draw game stats.
   printf("Mines remaining: %d", game->state.mines_left);
-  // printf("\nDEBUG: game->state.hidden_cells == %d", game->state.hidden_cells);
+  printf("\nDEBUG: game->state.hidden_cells == %d", game->state.hidden_cells);
 
   // Draw board.
   for (int i = 0; i < game->board->rows; i++) {
     for (int j = 0; j < game->board->cols; j++) {
       uint8_t is_cursor = (i == getCursorY(game) && j == getCursorX(game));
 
+      uint16_t pos_x = CELL_X_SPACING*j + PADDING_X + 1;
+      uint16_t pos_y = CELL_Y_SPACING*i + PADDING_Y + 4;
+
       if (is_cursor) {
-        ESC_GOTO(CELL_X_SPACING*j, CELL_Y_SPACING*i + 4);
+        ESC_GOTO(pos_x - 1, pos_y);
         printf("< >");
       }
 
       // printf("\033[%d;%dH", CELL_Y_SPACING * i + 3, CELL_X_SPACING * j + 1);
-      ESC_GOTO(CELL_X_SPACING*j + 1, CELL_Y_SPACING*i + 4);
+      ESC_GOTO(pos_x, pos_y);
 
       switch (getCellState(game->board, j, i)) {
         case HIDDEN:
