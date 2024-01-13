@@ -5,10 +5,10 @@
 #include <time.h>
 
 typedef enum game_state_t {
-  MENU,
-  ONGOING,
-  END,
-  QUIT
+  GSTATE_MENU,
+  GSTATE_ONGOING,
+  GSTATE_END,
+  GSTATE_QUIT
 } game_state_t;
 
 typedef struct state_t {

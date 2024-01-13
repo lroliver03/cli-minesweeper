@@ -26,15 +26,15 @@ int main() {
 
   printf("\033[2J");
   draw(game);
-  while (getGameState(game) == ONGOING) {
+  while (getGameState(game) == GSTATE_ONGOING) {
     handleInput(game, getInput());
     draw(game);
-    if (getBoardState(game->board) == LOSE) {
+    if (getBoardState(game->board) == BSTATE_LOSE) {
       printf("\nYou triggered a bomb! Game over!");
-      setGameState(game, QUIT);
+      setGameState(game, GSTATE_QUIT);
     } else if (game->state.hidden_cells == 0) {
       printf("\nYou safely discovered all bombs! You win!");
-      setGameState(game, END);
+      setGameState(game, GSTATE_END);
     }
   }
 

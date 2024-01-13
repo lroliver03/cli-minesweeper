@@ -5,9 +5,9 @@
 #include "mine.h"
 
 typedef enum board_state_t {
-  NONE,
-  WIN,
-  LOSE
+  BSTATE_NONE,
+  BSTATE_WIN,
+  BSTATE_LOSE
 } board_state_t;
 
 typedef struct board_t {

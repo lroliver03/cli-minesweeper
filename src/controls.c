@@ -45,13 +45,11 @@ void handleInput(game_t *game, control_t input) {
       if (state == HIDDEN) {
         setCellState(game->board, game->cursor.x, game->cursor.y, FLAGGED);
         --game->state.mines_left;
-        --game->state.hidden_cells;
         if (getCellIsBomb(game->board, getCursorX(game), getCursorY(game)))
           --game->state.flags_left;
       } else if (state == FLAGGED) {
         setCellState(game->board, game->cursor.x, game->cursor.y, HIDDEN);
         ++game->state.mines_left;
-        ++game->state.hidden_cells;
         if (getCellIsBomb(game->board, getCursorX(game), getCursorY(game)))
           ++game->state.flags_left;
       }
@@ -60,7 +58,7 @@ void handleInput(game_t *game, control_t input) {
       handleCellClick(game, state, is_bomb); // Complex logic, warrants separate function.
       break;
     case ACTION_QUIT:
-      setGameState(game, QUIT);
+      setGameState(game, GSTATE_QUIT);
       break;
   }
 }
@@ -70,7 +68,7 @@ void handleCellClick(game_t *game, cell_state_t state, uint8_t is_bomb) {
   if (state == HIDDEN) {
     // If cell is bomb, lose game.
     if (is_bomb)
-      setBoardState(game->board, LOSE);
+      setBoardState(game->board, BSTATE_LOSE);
 
     // If cell has no bomb neighbors, show adjacent cells with no bomb neighbors.
     if (getCellNeighbors(game->board, x, y) == 0)

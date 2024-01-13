@@ -5,10 +5,10 @@ game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines) {
   game->cursor.x = cols / 2;
   game->cursor.y = rows / 2;
   game->mines = mines;
-  game->state.game_state = ONGOING;
+  game->state.game_state = GSTATE_ONGOING;
   game->state.mines_left = mines;
   game->state.flags_left = mines;
-  game->state.hidden_cells = rows * cols;
+  game->state.hidden_cells = rows * cols - mines;
   time(&(game->state.start_time));
   game->board = createBoard(rows, cols);
 
@@ -24,7 +24,7 @@ game_t *createGame(uint8_t rows, uint8_t cols, uint8_t mines) {
     }
   }
 
-  setBoardState(game->board, NONE);
+  setBoardState(game->board, BSTATE_NONE);
   return game;
 }
 
