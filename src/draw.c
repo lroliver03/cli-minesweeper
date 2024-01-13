@@ -40,6 +40,7 @@ void draw(game_t *game) {
           break;
       }
     }
+  }
 
   // Draw board frame.
     // Top side: 1x corner, (PADDING_X + game->board->cols*CELL_X_SPACING + PADDING_X)x horizontal, 1x corner
@@ -66,7 +67,6 @@ void draw(game_t *game) {
   // Draw game stats.
   printf("Mines remaining: %d", game->state.mines_left);
   // printf("\nDEBUG: game->state.hidden_cells == %d", game->state.hidden_cells);
-  }
 
   printf("\n\n");
 }
