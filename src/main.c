@@ -25,10 +25,19 @@ int main() {
   game_t *game = createGame(ROWS, COLS, MINES);
 
   printf("\033[2J");
-  draw(game);
-  while (getGameState(game) == GSTATE_ONGOING) {
-    handleInput(game, getInput());
-    draw(game);
+  drawBoard(game);
+  game_state_t game_state;
+  while ((game_state = getGameState(game)) == GSTATE_ONGOING || game_state == GSTATE_MENU) {
+    control_t input = getInput();
+
+    if (game_state == GSTATE_MENU) {
+      handleMenuInput(game, input);
+      drawMenu(game);
+    } else if (game_state == GSTATE_ONGOING) {
+      handleGameInput(game, input);
+      drawBoard(game);
+    }
+    
     if (getBoardState(game->board) == BSTATE_LOSE) {
       printf("\nYou triggered a bomb! Game over!");
       setGameState(game, GSTATE_QUIT);

@@ -1,6 +1,10 @@
 #include "draw.h"
 
-void draw(game_t *game) {
+void drawMenu(game_t *game) {
+  ESC_GOTO(0, 0);
+}
+
+void drawBoard(game_t *game) {
   uint8_t rows = game->board->rows;
   uint8_t cols = game->board->cols;
   printf("\033[2J");
@@ -65,10 +69,14 @@ void draw(game_t *game) {
   putchar('\n');
 
   // Draw game stats.
+  ESC_GOTO(game->board->cols*CELL_X_SPACING + 2*PADDING_X + OFFSET_X + 3, OFFSET_Y + 1);
   printf("Mines remaining: %d", game->state.mines_left);
+  ESC_GOTO(game->board->cols*CELL_X_SPACING + 2*PADDING_X + OFFSET_X + 3, OFFSET_Y + 2);
+  time_t game_time = time(NULL) - game->state.start_time;
+  printf("Time: %ldmin%lds", game_time/60, game_time%60);
   // printf("\nDEBUG: game->state.hidden_cells == %d", game->state.hidden_cells);
 
-  printf("\n\n");
+  ESC_GOTO(OFFSET_X, game->board->rows*CELL_Y_SPACING + OFFSET_Y + 2*PADDING_Y + 2);
 }
 
 const char *NEIGHBOR_COLORS[] = {

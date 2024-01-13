@@ -1,32 +1,12 @@
 #include "controls.h"
 
-control_t getInput() {
-  switch (getc(stdin)) {
-    case KEY_FLAG:
-    case KEY_FLAG_UPPERCASE:
-      return ACTION_FLAG;
-    case KEY_CLICK:
-      return ACTION_CLICK;
-    case KEY_QUIT:
-      return ACTION_QUIT;
-    case '\033':
-      getc(stdin);
-      switch (getc(stdin)) {
-        case 'A':
-          return MOVE_UP;
-        case 'B':
-          return MOVE_DOWN;
-        case 'C':
-          return MOVE_RIGHT;
-        case 'D':
-          return MOVE_LEFT;
-      }
-  }
-  return ACTION_INVALID;
+void handleMenuInput(game_t *game, control_t input) {
+
 }
 
-void handleInput(game_t *game, control_t input) {
-  cell_state_t state = getCellState(game->board, game->cursor.x, game->cursor.y);
+void handleGameInput(game_t *game, control_t input) {
+  game_state_t game_state = getGameState(game);
+  cell_state_t cell_state = getCellState(game->board, game->cursor.x, game->cursor.y);
   uint8_t is_bomb = getCellIsBomb(game->board, game->cursor.x, game->cursor.y);
   switch (input) {
     case MOVE_UP:
@@ -42,12 +22,12 @@ void handleInput(game_t *game, control_t input) {
       if (game->cursor.x < game->board->cols - 1) ++game->cursor.x;
       break;
     case ACTION_FLAG:
-      if (state == HIDDEN) {
+      if (cell_state == HIDDEN) {
         setCellState(game->board, game->cursor.x, game->cursor.y, FLAGGED);
         --game->state.mines_left;
         if (getCellIsBomb(game->board, getCursorX(game), getCursorY(game)))
           --game->state.flags_left;
-      } else if (state == FLAGGED) {
+      } else if (cell_state == FLAGGED) {
         setCellState(game->board, game->cursor.x, game->cursor.y, HIDDEN);
         ++game->state.mines_left;
         if (getCellIsBomb(game->board, getCursorX(game), getCursorY(game)))
@@ -55,10 +35,11 @@ void handleInput(game_t *game, control_t input) {
       }
       break;
     case ACTION_CLICK:
-      handleCellClick(game, state, is_bomb); // Complex logic, warrants separate function.
+      handleCellClick(game, cell_state, is_bomb); // Complex logic, warrants separate function.
       break;
     case ACTION_QUIT:
-      setGameState(game, GSTATE_QUIT);
+      if (doDialog(2, 5, 30, 8, "Are you sure?", "If you quit, your progress will not be saved.", DIALOG_FORM_YES_NO) == DIALOG_YES)
+        setGameState(game, GSTATE_MENU);
       break;
   }
 }

@@ -7,6 +7,8 @@ add_executable(cli_minesweeper
     "src/game.c"
     "src/draw.c"
     "src/controls.c"
+    "src/dialog.c"
+    "src/input.c"
 )
 
 include_directories(cli_minesweeper ./include)
