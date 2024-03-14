@@ -1,11 +1,28 @@
 #include "controls.h"
 
 void handleMenuInput(game_t *game, control_t input) {
-
+  switch (input) {
+    case MOVE_UP:
+      if (game->cursor.y > 0) --game->cursor.y;
+      break;
+    case MOVE_DOWN:
+      if (game->cursor.y < 1) ++game->cursor.y;
+      break;
+    case ACTION_CLICK:
+      if (game->cursor.y == 0)
+        setGameState(game, GSTATE_ONGOING);
+      else if (game->cursor.y == 1)
+        if (doDialog(2, 5, 30, 6, "Quit game?", NULL, DIALOG_FORM_YES_NO) == DIALOG_YES)
+          setGameState(game, GSTATE_QUIT);
+      break;
+    case ACTION_QUIT:
+      if (doDialog(2, 5, 30, 6, "Quit game?", NULL, DIALOG_FORM_YES_NO) == DIALOG_YES)
+        setGameState(game, GSTATE_QUIT);
+      break;
+  }
 }
 
 void handleGameInput(game_t *game, control_t input) {
-  game_state_t game_state = getGameState(game);
   cell_state_t cell_state = getCellState(game->board, game->cursor.x, game->cursor.y);
   uint8_t is_bomb = getCellIsBomb(game->board, game->cursor.x, game->cursor.y);
   switch (input) {

@@ -12,6 +12,7 @@ typedef enum game_state_t {
 } game_state_t;
 
 typedef struct state_t {
+  uint8_t started;
   game_state_t game_state;
   time_t start_time;
   int16_t mines_left;

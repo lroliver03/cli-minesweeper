@@ -20,6 +20,7 @@ typedef struct game_t {
 
 game_t *createGame();
 void startGame(game_t *game, uint8_t rows, uint8_t cols, uint8_t mines);
+void resetGame(game_t *game, uint8_t rows, uint8_t cols, uint8_t mines);
 void deleteGame(game_t *game);
 game_state_t getGameState(game_t *game);
 uint8_t getTotalMines(game_t *game);

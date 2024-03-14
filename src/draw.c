@@ -3,9 +3,19 @@
 void drawMenu(game_t *game) {
   ESC_ERASEALL();
   ESC_GOTO(0, 0);
-  printf(MENU_TITLE);
+  printf("%s%s%s\n\n", ESC_BOLD, MENU_TITLE, ESC_RESET);
 
-  
+  if (getCursorY(game) == 0)
+    printf("%s > ", ESC_BOLD);
+  else
+    printf("  ");
+  printf("PLAY%s\n", ESC_RESET);
+
+  if (getCursorY(game) == 1)
+    printf("%s > ", ESC_BOLD);
+  else
+    printf("  ");
+  printf("QUIT%s\n", ESC_RESET);
 }
 
 void drawBoard(game_t *game) {

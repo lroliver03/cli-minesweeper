@@ -5,6 +5,7 @@ game_t *createGame() {
   game->cursor.x = 0;
   game->cursor.y = 0;
   game->mines = 0;
+  game->state.started = 0;
   game->state.game_state = GSTATE_MENU;
   game->state.mines_left = 0;
   game->state.flags_left = 0;
@@ -18,6 +19,7 @@ void startGame(game_t *game, uint8_t rows, uint8_t cols, uint8_t mines) {
   game->cursor.x = cols / 2;
   game->cursor.y = rows / 2;
   game->mines = mines;
+  game->state.started = 1;
   game->state.game_state = GSTATE_ONGOING;
   game->state.mines_left = mines;
   game->state.flags_left = mines;
@@ -38,6 +40,12 @@ void startGame(game_t *game, uint8_t rows, uint8_t cols, uint8_t mines) {
   }
 
   setBoardState(game->board, BSTATE_NONE);
+}
+
+void resetGame(game_t *game, uint8_t rows, uint8_t cols, uint8_t mines) {
+  uint8_t started = game->state.started;
+  startGame(game, rows, cols, mines);
+  game->state.started = started;
 }
 
 void deleteGame(game_t *game) {
