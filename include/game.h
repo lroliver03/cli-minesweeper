@@ -1,6 +1,7 @@
 #pragma once
 
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <time.h>
@@ -11,8 +12,15 @@ typedef struct cursor_t {
   uint8_t x, y;
 } cursor_t;
 
+typedef struct settings_t {
+  uint8_t rows, cols;
+  uint8_t title; // 0 for random title, any number >0 for selected title.
+  uint8_t current_title; // NOT EDITABLE
+} settings_t;
+
 typedef struct game_t {
   state_t state;
+  settings_t settings;
   cursor_t cursor;
   uint8_t mines;
   board_t *board;
