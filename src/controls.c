@@ -6,9 +6,18 @@ void handleMenuInput(game_t *game, control_t input) {
       if (game->cursor.y > 0) --game->cursor.y;
       break;
     case MOVE_DOWN:
-      if (game->cursor.y < 1) ++game->cursor.y;
+      if (game->cursor.y < MAX_MAINMENU_OPTIONS - 1) ++game->cursor.y;
       break;
     case ACTION_CLICK:
+      switch (game->cursor.y) {
+        case 0: setGameState(game, GSTATE_ONGOING); break;
+        case 1:
+          setGameState(game, GSTATE_SETTINGS); break;
+        case 2:
+          if (doDialog(2, 5, 30, 6, "Quit game?", NULL, DIALOG_FORM_YES_NO) == DIALOG_YES)
+            setGameState(game, GSTATE_QUIT);
+          break;
+      }
       if (game->cursor.y == 0)
         setGameState(game, GSTATE_ONGOING);
       else if (game->cursor.y == 1)
@@ -20,6 +29,10 @@ void handleMenuInput(game_t *game, control_t input) {
         setGameState(game, GSTATE_QUIT);
       break;
   }
+}
+
+void handleSettingsInput(game_t *game, control_t input) {
+  return;
 }
 
 void handleGameInput(game_t *game, control_t input) {
@@ -104,7 +117,7 @@ void handleCellClick(game_t *game, cell_state_t state, uint8_t is_bomb) {
   }
 }
 
-void __recursiveZeroCellClick(game_t *game, uint8_t x, uint8_t y) {
+static void __recursiveZeroCellClick(game_t *game, uint8_t x, uint8_t y) {
   // If cell is bomb or is already shown, return.
   if (getCellIsBomb(game->board, x, y) || (getCellState(game->board, x, y) == SHOWN)) return; // This getCellState inside the IF statement avoids infinite recursive loops. DON'T REMOVE IT.
 
