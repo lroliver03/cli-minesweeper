@@ -1,21 +1,75 @@
 #include "draw.h"
 
+static const char *MAINMENU_OPTIONS[] = {
+  "PLAY",
+  "SETTINGS",
+  "QUIT"
+};
+
+uint8_t title_selected;
+uint8_t CURRENT_TITLE;
+
 void drawMenu(game_t *game) {
   ESC_ERASEALL();
   ESC_GOTO(0, 0);
-  printf("%s%s%s\n\n", ESC_BOLD, MENU_TITLE, ESC_RESET);
 
-  if (getCursorY(game) == 0)
-    printf("%s > ", ESC_BOLD);
-  else
-    printf("  ");
-  printf("PLAY%s\n", ESC_RESET);
+  // Make title bold.
+  printf("%s", ESC_BOLD);
 
-  if (getCursorY(game) == 1)
-    printf("%s > ", ESC_BOLD);
-  else
-    printf("  ");
-  printf("QUIT%s\n", ESC_RESET);
+  // Get random title.
+  FILE *fptr = fopen("../config/title.txt", "r");
+
+  if (fptr == NULL) {
+    printf("Not able to open file.\n");
+  }
+
+  unsigned int TITLE_MAX;
+  fscanf(fptr, "%d", &TITLE_MAX);
+  // printf("TITLE_MAX = %d\n\n", TITLE_MAX); // Debug.
+
+  // If we're supposed to change title, get random index.
+  if (game->state.change_title) {
+    CURRENT_TITLE = (rand() % TITLE_MAX);
+    game->state.change_title = 0;
+  }
+  title_selected = CURRENT_TITLE;
+
+  char buffer[200];
+  while (title_selected >= 0 && fgets(buffer, 200, fptr)) {
+    if (buffer[0] == '%') {
+      title_selected--;
+      continue;
+    }
+    if (title_selected == 0) printf("%s", buffer);
+  }
+
+  fclose(fptr);
+
+  printf("%s\n\n", ESC_RESET);
+
+  for (uint8_t i = 0; i < MAX_MAINMENU_OPTIONS; ++i) {
+    if (getCursorY(game) == i)
+      printf("%s > ", ESC_BOLD);
+    else
+      printf("  ");
+    printf("%s%s\n", MAINMENU_OPTIONS[i], ESC_RESET);
+  }
+
+//   if (getCursorY(game) == 0)
+//     printf("%s > ", ESC_BOLD);
+//   else
+//     printf("  ");
+//   printf("PLAY%s\n", ESC_RESET);
+
+//   if (getCursorY(game) == 1)
+//     printf("%s > ", ESC_BOLD);
+//   else
+//     printf("  ");
+//   printf("QUIT%s\n", ESC_RESET);
+}
+
+void drawSettings(game_t *game) {
+  return;
 }
 
 void drawBoard(game_t *game) {

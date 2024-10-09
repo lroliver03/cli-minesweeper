@@ -7,6 +7,7 @@
 typedef enum game_state_t {
   GSTATE_MENU,
   GSTATE_ONGOING,
+  GSTATE_SETTINGS,
   GSTATE_END,
   GSTATE_QUIT
 } game_state_t;
@@ -18,4 +19,5 @@ typedef struct state_t {
   int16_t mines_left;
   uint8_t flags_left;
   uint16_t hidden_cells;
+  uint8_t change_title;
 } state_t;

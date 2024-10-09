@@ -1,5 +1,7 @@
 #include "game.h"
 
+char *MENU_TITLE;
+
 game_t *createGame() {
   game_t *game = malloc(sizeof(game_t));
   game->cursor.x = 0;
@@ -10,6 +12,7 @@ game_t *createGame() {
   game->state.mines_left = 0;
   game->state.flags_left = 0;
   game->state.hidden_cells = 0;
+  game->state.change_title = 0;
   time(&(game->state.start_time));
   game->board = NULL;
   return game;
@@ -39,7 +42,7 @@ void startGame(game_t *game, uint8_t rows, uint8_t cols, uint8_t mines) {
     }
   }
 
-  setBoardState(game->board, BSTATE_NONE);
+  setBoardState(game->board, BSTATE_UNINIT);
 }
 
 void resetGame(game_t *game, uint8_t rows, uint8_t cols, uint8_t mines) {
@@ -71,6 +74,8 @@ time_t getTimeSinceStart(game_t *game) {
 
 void setGameState(game_t *game, game_state_t state) {
   game->state.game_state = state;
+  if (state == GSTATE_MENU)
+    game->state.change_title = 1;
 }
 
 void moveCursor(game_t *game, int16_t dx, int16_t dy) {
