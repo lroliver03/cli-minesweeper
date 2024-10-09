@@ -26,7 +26,7 @@ int main() {
   setGameState(game, GSTATE_MENU);
   moveCursorTo(game, 0, 0);
 
-  // printf("\033[2J");
+  // Game loop.
   ESC_ERASEALL();
   game_state_t game_state;
   drawBoard(game);
@@ -36,21 +36,28 @@ int main() {
     if (game_state == GSTATE_MENU) {
       drawMenu(game);
       handleMenuInput(game, getInput());
+    } else if (game_state == GSTATE_SETTINGS) {
+      drawSettings(game);
+      handleSettingsInput(game, getInput());
     } else if (game_state == GSTATE_ONGOING) {
       drawBoard(game);
       handleGameInput(game, getInput());
     }
-
-    // LAST TIME YOU WORKED ON THIS, YOU WERE UNDER THE EFFECT OF 3 BEERS, HAD SEEN THEM TOGETHER AND COULDN'T REALLY KEEP IT TOGETHER
-    // IT'S NOT REALLY YOUR FAULT AT THIS POINT
-    // JUST GET BACK TO WORK WHEN YOU READ THIS SOBER
     
     if (getBoardState(game->board) == BSTATE_LOSE) {
-      printf("\nYou triggered a bomb! Game over!");
+      printf("\nYou triggered a bomb! Game over!\nPress any key to continue...");
+      getchar();
       setGameState(game, GSTATE_QUIT);
     } else if (game->state.hidden_cells == 0) {
-      printf("\nYou safely discovered all bombs! You win!");
-      setGameState(game, GSTATE_END);
+      drawBoard(game);
+      printf("\nYou safely discovered all bombs! You win!\nPress any key to continue...");
+      getchar();
+      dialog_result_t response = doDialog(2, 2, 36, 6, "", "Do you wish to go to the main menu?", DIALOG_FORM_YES_NO);
+      if (response == DIALOG_YES) {
+        setGameState(game, GSTATE_MENU);
+        resetGame(game, game->board->rows, game->board->cols, game->mines);
+      } else if (response == DIALOG_NO)
+        setGameState(game, GSTATE_END);
     }
   }
 

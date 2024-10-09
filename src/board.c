@@ -4,7 +4,7 @@ board_t *createBoard(uint8_t rows, uint8_t cols) {
   board_t *b = malloc(sizeof(board_t));
   b->rows = rows;
   b->cols = cols;
-  b->state = BSTATE_NONE;
+  b->state = BSTATE_UNINIT;
   b->cells = calloc(sizeof(cell_t), rows * cols);
   for (int i = 0; i < b->rows; i++) {
     for (int j = 0; j < b->cols; j++) {
@@ -24,7 +24,7 @@ void deleteBoard(board_t *board) {
 void resetBoard(board_t *board, uint8_t rows, uint8_t cols) {
   board->rows = rows;
   board->cols = cols;
-  board->state = BSTATE_NONE;
+  board->state = BSTATE_UNINIT;
   free(board->cells);
   board->cells = calloc(sizeof(cell_t), rows * cols);
   for (int i = 0; i < board->rows; i++) {
@@ -81,30 +81,3 @@ void setCellIsBomb(board_t *board, uint8_t x, uint8_t y, uint8_t is_bomb) {
     }
   }
 }
-
-// void setCellNeighbors(board_t *board, uint8_t x, uint8_t y, uint8_t neighbors) {
-//   board->cells[board->rows * y + x].neighbors = neighbors;
-// }
-
-// void updateNeighbors(board_t *board) {
-//   uint8_t x_lower, x_upper, y_lower, y_upper; // 3x3 bounds
-  
-//   for (int i = 0; i < board->rows; ++i) {
-//     for (int j = 0; j < board->cols; ++j) {
-
-//       y_lower = (i > 0)?(i - 1):(0);
-//       y_upper = (i < board->rows - 1)?(board->rows):(i + 1);
-//       x_lower = (j > 0)?(j - 1):(0);
-//       x_upper = (j < board->cols - 1)?(board->cols):(j + 1);
-
-//       for (int y = y_lower; y <= y_upper; ++y) {
-//         for (int x = x_lower; x <= x_upper; ++x) {
-//           if (x == j && y == i) continue;
-//           if (getCellIsBomb(board, x, y))
-//             setCellNeighbors(board, j, i, getCellNeighbors(board, j, i) + 1);
-//         }
-//       }
-
-//     }
-//   }
-// }

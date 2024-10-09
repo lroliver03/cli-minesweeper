@@ -5,7 +5,8 @@
 #include "mine.h"
 
 typedef enum board_state_t {
-  BSTATE_NONE,
+  BSTATE_UNINIT,
+  BSTATE_ACTIVE,
   BSTATE_WIN,
   BSTATE_LOSE
 } board_state_t;
@@ -26,5 +27,3 @@ uint8_t getCellIsBomb(board_t *board, uint8_t x, uint8_t y);
 uint8_t getCellNeighbors(board_t *board, uint8_t x, uint8_t y);
 void setCellState(board_t *board, uint8_t x, uint8_t y, cell_state_t state);
 void setCellIsBomb(board_t *board, uint8_t x, uint8_t y, uint8_t is_bomb);
-// void setCellNeighbors(board_t *board, uint8_t x, uint8_t y, uint8_t neighbors); // obsolete
-// void updateNeighbors(board_t *board); // obsolete
