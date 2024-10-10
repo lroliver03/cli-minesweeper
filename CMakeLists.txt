@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
-project(cli_minesweeper VERSION 0.0.0)
+project(sudosweeper VERSION 0.0.0)
 
-add_executable(cli_minesweeper
+add_executable(sudosweeper
     "src/main.c"
     "src/board.c"
     "src/game.c"
@@ -11,4 +11,4 @@ add_executable(cli_minesweeper
     "src/input.c"
 )
 
-include_directories(cli_minesweeper ./include)
+include_directories(sudosweeper ./include)

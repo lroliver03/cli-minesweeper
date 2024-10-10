@@ -1,5 +1,27 @@
 #include "controls.h"
 
+static void __recursiveZeroCellClick(game_t *game, uint8_t x, uint8_t y) {
+  // If cell is bomb or is already shown, return.
+  if (getCellIsBomb(game->board, x, y) || (getCellState(game->board, x, y) == SHOWN)) return; // This getCellState inside the IF statement avoids infinite recursive loops. DON'T REMOVE IT.
+
+  setCellState(game->board, x, y, SHOWN);
+  --game->state.hidden_cells;
+
+  if (getCellNeighbors(game->board, x, y) > 0) return;
+  
+  uint8_t x_lower = (x > 0)?(x - 1):(0);
+  uint8_t x_upper = (x < game->board->cols - 1)?(x + 2):(game->board->cols);
+  uint8_t y_lower = (y > 0)?(y - 1):(0);
+  uint8_t y_upper = (y < game->board->rows - 1)?(y + 2):(game->board->rows);
+
+  for (int i = y_lower; i < y_upper; ++i) {
+    for (int j = x_lower; j < x_upper; ++j) {
+      if (i == y && j == x) continue;
+      __recursiveZeroCellClick(game, j, i);
+    }
+  }
+}
+
 void handleMenuInput(game_t *game, control_t input) {
   switch (input) {
     case MOVE_UP:
@@ -113,28 +135,6 @@ void handleCellClick(game_t *game, cell_state_t state, uint8_t is_bomb) {
           __recursiveZeroCellClick(game, j, i);
         }
       }
-    }
-  }
-}
-
-static void __recursiveZeroCellClick(game_t *game, uint8_t x, uint8_t y) {
-  // If cell is bomb or is already shown, return.
-  if (getCellIsBomb(game->board, x, y) || (getCellState(game->board, x, y) == SHOWN)) return; // This getCellState inside the IF statement avoids infinite recursive loops. DON'T REMOVE IT.
-
-  setCellState(game->board, x, y, SHOWN);
-  --game->state.hidden_cells;
-
-  if (getCellNeighbors(game->board, x, y) > 0) return;
-  
-  uint8_t x_lower = (x > 0)?(x - 1):(0);
-  uint8_t x_upper = (x < game->board->cols - 1)?(x + 2):(game->board->cols);
-  uint8_t y_lower = (y > 0)?(y - 1):(0);
-  uint8_t y_upper = (y < game->board->rows - 1)?(y + 2):(game->board->rows);
-
-  for (int i = y_lower; i < y_upper; ++i) {
-    for (int j = x_lower; j < x_upper; ++j) {
-      if (i == y && j == x) continue;
-      __recursiveZeroCellClick(game, j, i);
     }
   }
 }
